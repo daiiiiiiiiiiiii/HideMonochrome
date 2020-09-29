@@ -90,7 +90,7 @@ public class PlayerControl : MonoBehaviour
         }
         if (!_isGround)
         {
-            _state = State.JumpUp;
+            _state = State.Jump;
         }
         SetAnimInfo((int)_state);
         // 画像の向きを変える

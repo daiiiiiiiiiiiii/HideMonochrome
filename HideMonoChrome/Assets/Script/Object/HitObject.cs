@@ -4,8 +4,7 @@ public enum State
 {
     Idle,
     Run,
-    JumpUp,
-    JumpDown,
+    Jump,
     // Dead,
     Max
 }
