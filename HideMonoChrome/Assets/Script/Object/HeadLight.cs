@@ -25,14 +25,6 @@ public class HeadLight : MonoBehaviour
     {
         var scl = _gameObj.transform.localScale.x;
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, scl * -90f);
-        if(scl == 1)
-        {
-            Debug.Log("みぎ");
-        }
-        else
-        {
-            Debug.Log("hidari");
-        }
     }
 
     private void SetLightPosition()

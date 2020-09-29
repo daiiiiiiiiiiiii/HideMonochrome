@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour
     Animator _animator;                 // アニメーション切り替え用変数
     String[] _animFlagName;             // アニメーションフラグの名前
     int _animNum = (int)State.Max;      // アニメーションの種類
+    public GameObject _start;
 
     /// <summary>
     /// 左右移動用変数
@@ -22,7 +23,6 @@ public class PlayerControl : MonoBehaviour
     private float _jumpHeight = 360f;   // ジャンプの高さ
 
     private bool _isGround = false;     // 地面にいるかどうか// Stateでとればいい
-    private ObjectType _type;
 
     // 初期化
     void Start()
@@ -37,6 +37,7 @@ public class PlayerControl : MonoBehaviour
             "IsJumpUp",
             "IsJumpDown"
         };
+        transform.position = _start.transform.position;
     }
 
     void Update()
@@ -52,21 +53,17 @@ public class PlayerControl : MonoBehaviour
     {
         _dir = Input.GetAxisRaw("Horizontal");
         _isJumpFlag = Input.GetButtonDown("Jump");
+        if (Input.GetButtonDown("Resporn"))
+        {
+            _state = State.Idle;
+            transform.position = _start.transform.position;
+        }
     }
 
     void Move()
     {
         // 左右移動
         this._rb.velocity = new Vector2(_runSpeed * _dir, _rb.velocity.y);
-
-        //if (_currentSpeed < _runLimit)
-        //{
-        //    this._rb.AddForce(transform.right * _dir * _runPower);
-        //}
-        //else
-        //{
-            //this.transform.position += new Vector3(Time.deltaTime * _dir * _runSpeed, 0, 0);
-       // }
 
         if(_isGround && _dir == 0)
         {
@@ -76,49 +73,22 @@ public class PlayerControl : MonoBehaviour
         // ジャンプ
         if (_isGround && _isJumpFlag)
         {
-            this._rb.AddForce(transform.up * _jumpHeight);
+             this._rb.AddForce(transform.up * _jumpHeight);
             _isGround = false;
         }
     }
 
     void SetState()
     {
-        // 地面
-        if(_type == ObjectType.Ground)
+        if(_dir == 0)
         {
-            if (_dir == 0)
-            {
-                _state = State.Idle;
-            }
-            else
-            {
-                _state = State.Run;
-            }
+            _state = State.Idle;
         }
-        // ニードル
-        if(_type == ObjectType.Needle)
-        {
-            // _state = State.Death;
-        }
-        // 梯子
-        if(_type == ObjectType.Ladder)
-        {
-            //if (_dir == 0)
-            //{
-            //    _state = State.Climb;
-            //}
-            //else
-            //{
-            //    _state = State.Down;
-            //}
-        }
-        // ゴール
-        if(_type == ObjectType.Goal)
-        {
-
-        }
-        // 空中
         else
+        {
+            _state = State.Run;
+        }
+        if (!_isGround)
         {
             _state = State.JumpUp;
         }
@@ -151,11 +121,20 @@ public class PlayerControl : MonoBehaviour
     // 着地判定
     void OnTriggerEnter2D(Collider2D col)
     {
-        _type = col.gameObject.GetComponent<IHitObject>().GetObjectType(col);
+        _rb.position = col.gameObject.GetComponent<IHitObject>().SetPosition(_rb);
+        _isGround = true;
+    }
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.transform.parent.name == "LR")
+        {
+            _rb.position = col.gameObject.GetComponent<IHitObject>().SetPosition(_rb);
+        }
+        _isGround = true;
     }
     // 空中判定
     private void OnTriggerExit2D(Collider2D col)
     {
-        _type = ObjectType.None;
+        _isGround = false;
     }
 }

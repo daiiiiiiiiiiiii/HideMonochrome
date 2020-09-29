@@ -6,10 +6,7 @@ public enum State
     Run,
     JumpUp,
     JumpDown,
-    // Climb,
-    // Down,
     // Dead,
-    // Die,
     Max
 }
 
@@ -18,13 +15,13 @@ public enum ObjectType
     None,
     Ground,
     Needle,
-    Ladder,
-    Swiych,
+    FloarUD,
+    FloarLR,
     Goal,
     Max
 }
 
 public interface IHitObject
 {
-    ObjectType GetObjectType(Collider2D col);
+    Vector2 SetPosition(Rigidbody2D rb);
 }

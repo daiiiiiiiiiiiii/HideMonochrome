@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Ground : MonoBehaviour,IHitObject
 {
-    public ObjectType GetObjectType(Collider2D col)
+    public Vector2 SetPosition(Rigidbody2D rb)
     {
-        return ObjectType.Ground;
+        return rb.position;
     }
 }
