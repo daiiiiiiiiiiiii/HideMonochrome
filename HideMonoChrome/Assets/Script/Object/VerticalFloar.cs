@@ -21,7 +21,7 @@ public class VerticalFloar : MonoBehaviour,IHitObject
 
     public Vector2 SetPosition(Rigidbody2D rb)
     {
-        rb.position = new Vector2(rb.position.x,_movePos.y);
+        rb.position = new Vector2(rb.position.x,rb.position.y);
         return rb.position;
     }
 }

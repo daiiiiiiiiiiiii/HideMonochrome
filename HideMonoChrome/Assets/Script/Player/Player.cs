@@ -43,8 +43,8 @@ public class Player : MonoBehaviour
     {
         // キー入力によって移動を行う
         GetInput();
-        SetState();
         Move();
+        SetState();
     }
 
     // 何らかの処理に必要なキー入力の取得
@@ -75,17 +75,20 @@ public class Player : MonoBehaviour
 
     void SetState()
     {
-        if (_dir == 0)
+        if (_state != State.Dead)
         {
-            _state = State.Idle;
-        }
-        else
-        {
-            _state = State.Run;
-        }
-        if (!_isGround)
-        {
-            _state = State.Jump;
+            if (_dir == 0)
+            {
+                _state = State.Idle;
+            }
+            else
+            {
+                _state = State.Run;
+            }
+            if (!_isGround)
+            {
+                _state = State.Jump;
+            }
         }
         SetAnimInfo((int)_state);
         // 画像の向きを変える

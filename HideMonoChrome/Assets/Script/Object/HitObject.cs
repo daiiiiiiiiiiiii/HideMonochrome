@@ -5,7 +5,7 @@ public enum State
     Idle,
     Run,
     Jump,
-    // Dead,
+    Dead,
     Max
 }
 
